@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Mercados</string>
+    <string name="mercados">Mercados</string>
+    <string name="card_input_usuario">Usuario</string>
+    <string name="card_password">Contraseña</string>
+    <string name="btn_login">Iniciar Sesión</string>
+    <string name="Bienvenido">Bienvenido</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="estado_de_cuenta">Estado de Cuenta</string>
+    <string name="giro">Giro</string>
+</resources>
