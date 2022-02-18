@@ -31,5 +31,25 @@ interface MyApiMesas {
     @POST("create/plan")
     suspend fun setMesaFromApp( @Field("id_locacion") id_locaicon: String,
                                 @Field("id_mesa") id_mesa : String,
-                                @Field("fecha") fecha: String) : Response<CreatePlanResponse>
+                                @Field("fecha") fecha: String
+    ) : Response<CreatePlanResponse>
+
+    @FormUrlEncoded
+    @POST("createPago")
+    suspend fun createPago( @Field("id_proveedor") id_proveedor: String,
+                            @Field("monto_total") monto_total : String,
+                            @Field("pago") pago : String,
+                            @Field("fecha_pago") fecha_pago : String
+    ) : Response<CreatePagoResponse>
+
+    @FormUrlEncoded
+    @POST("createCorte")
+    suspend fun createCorte( @Field("id_plan") id_plan: String,
+                             @Field("usd") usd: String,
+                             @Field("pesos") pesos: String,
+                             @Field("eur") eur: String,
+                             @Field("libras") libras: String,
+                             @Field("numero_bolsa") numero_bolsa: String,
+                             @Field("recibe_bolsa") recibe_bolsa: String
+    ) : Response<CorteResponse>
 }

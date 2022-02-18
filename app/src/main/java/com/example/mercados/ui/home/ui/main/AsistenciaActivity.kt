@@ -1,8 +1,14 @@
 package com.example.mercados.ui.home.ui.main
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.graphics.green
+import androidx.core.graphics.toColor
+import androidx.core.view.isVisible
+import com.example.mercados.R
 import com.example.mercados.data.network.MyApiMesas
 import com.example.mercados.databinding.ActivityAsistenciaBinding
 import com.example.mercados.util.toast
@@ -27,6 +33,7 @@ class AsistenciaActivity : AppCompatActivity() {
         val fecha = bundle?.get("fecha")
         val locacion = bundle?.get("locacion")
         val renta = bundle?.get("renta")
+        val asistencia = bundle?.get("asistencia")
 
         binding.idplan.text = (idplan as CharSequence?)!!
         binding.idmesa.text = (idmesa as CharSequence?)!!
@@ -36,6 +43,9 @@ class AsistenciaActivity : AppCompatActivity() {
         binding.fecha.text = (fecha as CharSequence?)!!
         binding.locacion.text = (locacion as CharSequence?)!!
         binding.renta.text = renta as CharSequence?
+        if(asistencia == "1"){
+            binding.btnAsistencia.isVisible = false
+        }
 
         val toPass = Bundle()
         toPass.putString("idplan", idplan.toString())
@@ -54,10 +64,9 @@ class AsistenciaActivity : AppCompatActivity() {
         binding.btnPagos.setOnClickListener{ startActivity(intent)}
     }
 
-
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://57ac-189-174-165-86.ngrok.io/api/")
+            .baseUrl("http://d037-189-174-131-177.ngrok.io/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -76,9 +85,4 @@ class AsistenciaActivity : AppCompatActivity() {
             }
         }
     }
-
-    /*override fun finish() {
-        super.finish()
-    }*/
-
 }

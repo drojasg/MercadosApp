@@ -7,12 +7,15 @@ import android.widget.RadioButton
 import com.example.mercados.R
 import com.example.mercados.data.network.MyApiMesas
 import com.example.mercados.databinding.ActivityPagosBinding
+import com.example.mercados.util.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.floor
 
 class PagosActivity : AppCompatActivity() {
 
@@ -25,6 +28,7 @@ class PagosActivity : AppCompatActivity() {
         val bundle = intent.extras
         val cantidad = bundle?.get("cantidad")
         val total = bundle?.get("total")
+        val idproveedor = bundle?.get("idproveedor")
         println("el total es: $total")
         getExRate()
         getExEurRate()
@@ -34,8 +38,16 @@ class PagosActivity : AppCompatActivity() {
         printCantidad(cantidad as ArrayList<Int>)
         val pago = binding.etPago.text
 
+        val c = Calendar.getInstance()
+        val day = c.get(Calendar.DAY_OF_MONTH)
+        val month = c.get(Calendar.MONTH)
+        val realmonth = month + 1
+        val year = c.get(Calendar.YEAR)
+        val fecha = "$realmonth-$day-$year"
+
         binding.tvSaldoPendiente.text = total.toString()
-        binding.btnPagar.setOnClickListener { doMath(cantidad, pago.toString().toFloat(), total as Float) }
+        binding.btnPagar.setOnClickListener { doMath(cantidad, pago.toString().toFloat(), total as Float)
+        setNewPago("$idproveedor", "$total", "$pago", "$fecha")}
     }
 
     fun printCantidad(cantidad : ArrayList<Int>){
@@ -45,7 +57,6 @@ class PagosActivity : AppCompatActivity() {
     fun doMath(cantidad: ArrayList<Int>, _x : Float, total:Float){
         var b: Float
         var x = _x
-        var c : Float
         var myArray = arrayListOf<Float>()
         for(n in cantidad){
             if (x >= n){
@@ -65,14 +76,37 @@ class PagosActivity : AppCompatActivity() {
             }
         }
         println(myArray)
-
     }
 
-    fun getRetrofit() : Retrofit{
+    private fun getRetrofit() : Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://57ac-189-174-165-86.ngrok.io/api/")
+            .baseUrl("http://d037-189-174-131-177.ngrok.io/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    private fun setNewPago(id_proveedor:String, monto_total:String, pago:String, fecha_pago:String){
+        CoroutineScope(Dispatchers.IO).launch {
+            var call = getRetrofit().create(MyApiMesas::class.java).createPago("$id_proveedor",
+                "$monto_total", "$pago", "$fecha_pago")
+            var body = call.body()
+            runOnUiThread {
+                if (call.isSuccessful){
+                    if(body != null){
+                        val idpago = body.id_pago
+                        toast("Pago guardado correctamente. $idpago")
+                        setPagos("$idpago")
+                    }
+                }
+                else{
+                    toast("Ha ocurrido un error")
+                }
+            }
+        }
+    }
+
+    private fun setPagos(idpago : String){
+        toast("HOLIIIII-$idpago")
     }
 
     fun getExRate(){
@@ -127,21 +161,21 @@ class PagosActivity : AppCompatActivity() {
                         val pago = binding.etPago.text.toString()
                         val pesos = binding.tvTipoCambio.text.toString()
                         val total = pago.toFloat()/pesos.toFloat()
-                        binding.tvtotalfinal.text = total.toString()
+                        binding.tvtotalfinal.text = floor(total).toInt().toString()
                     }
                 R.id.rbeur ->
                     if (checked){
                         val pago = binding.etPago.text.toString()
                         val euros = binding.tvTipoCambioEur.text.toString()
-                        val total: Float = pago.toFloat()*euros.toFloat()
-                        binding.tvtotalfinal.text = total.toString()
+                        var total = pago.toFloat()*euros.toFloat()
+                        binding.tvtotalfinal.text = floor(total).toInt().toString()
                     }
                 R.id.rblib ->
                     if (checked){
                         val pago = binding.etPago.text.toString()
                         val libras = binding.tvTipoCambioGbp.text.toString()
                         val total = pago.toFloat()*libras.toFloat()
-                        binding.tvtotalfinal.text = total.toString()
+                        binding.tvtotalfinal.text = floor(total).toInt().toString()
                     }
             }
         }

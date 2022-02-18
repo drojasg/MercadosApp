@@ -7,4 +7,10 @@
         android:icon="@drawable/ic_add_circle"
         android:title="Nuevo"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/corte"
+        android:title="Corte"
+        app:showAsAction="always"/>
+
 </menu>

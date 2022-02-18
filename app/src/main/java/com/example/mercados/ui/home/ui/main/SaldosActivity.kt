@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mercados.R
 import com.example.mercados.data.network.MyApiMesas
 import com.example.mercados.data.network.responses.EstadoDeCuentaResponse
 import com.example.mercados.databinding.ActivitySaldosBinding
@@ -34,6 +33,8 @@ class SaldosActivity : AppCompatActivity() {
         getEstadosCuenta("$idproveedor")
         initRecyclerView()
 
+        toPass.putString("idproveedor", idproveedor.toString())
+
         binding.btnPagar.setOnClickListener{
             val intent = Intent(this@SaldosActivity, PagosActivity::class.java)
             intent.putExtras(toPass)
@@ -49,7 +50,7 @@ class SaldosActivity : AppCompatActivity() {
 
     private fun getRetrofit() : Retrofit{
         return Retrofit.Builder()
-            .baseUrl("http://57ac-189-174-165-86.ngrok.io/api/")
+            .baseUrl("http://d037-189-174-131-177.ngrok.io/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

@@ -21,6 +21,9 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.mercados.ui.home.ui.main.CorteActivity
+import com.example.mercados.ui.home.ui.main.Mercados.Companion.prefs
+import com.example.mercados.util.toast
 
 class MainActivity : AppCompatActivity(), RecyclerViewClickListener {
 
@@ -40,7 +43,6 @@ class MainActivity : AppCompatActivity(), RecyclerViewClickListener {
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             getMesas("$locacion")
-            adapter.notifyDataSetChanged()
             binding.swipeRefreshLayout.isRefreshing = false
         }
     }
@@ -57,6 +59,10 @@ class MainActivity : AppCompatActivity(), RecyclerViewClickListener {
                 val intent = Intent(this, AddNewMesaActivity::class.java )
                 startActivity(intent)
             }
+            R.id.corte->{
+                val intent = Intent(this, CorteActivity::class.java)
+                startActivity(intent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -69,7 +75,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewClickListener {
 
     private fun getRetrofit(): Retrofit{
         return Retrofit.Builder()
-            .baseUrl("http://57ac-189-174-165-86.ngrok.io/api/")
+            .baseUrl("http://d037-189-174-131-177.ngrok.io/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -83,7 +89,12 @@ class MainActivity : AppCompatActivity(), RecyclerViewClickListener {
                     val lista = mesas ?: emptyList()
                     mesasList.clear()
                     mesasList.addAll(lista)
-                    Log.d("AQUI ESTA LA LLAMADA DEL API", "$mesas")
+                    if(mesasList.isEmpty()){
+                        toast("La lista está vacía")
+                    }else{
+                        prefs.saveIdPlan("${mesasList[0].id_plan}")
+                    }
+
                     adapter.notifyDataSetChanged()
                 }else{
                     showError()

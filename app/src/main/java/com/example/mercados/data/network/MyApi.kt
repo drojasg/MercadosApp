@@ -21,7 +21,7 @@ interface MyApi {
     companion object{
         operator fun invoke() : MyApi{
             return Retrofit.Builder()
-                .baseUrl("http://57ac-189-174-165-86.ngrok.io/api/")
+                .baseUrl("http://d037-189-174-131-177.ngrok.io/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(MyApi::class.java)

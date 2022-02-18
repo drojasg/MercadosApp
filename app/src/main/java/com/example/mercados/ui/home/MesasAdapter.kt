@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mercados.data.network.responses.LocacionResponse
 import com.example.mercados.databinding.ItemMesasBinding
 import com.example.mercados.ui.home.ui.main.AsistenciaActivity
+import com.example.mercados.ui.home.ui.main.Mercados.Companion.prefs
 import com.example.mercados.ui.home.ui.main.RecyclerViewClickListener
 
 class MesasAdapter(
@@ -38,6 +39,12 @@ class MesasAdapter(
         holder.itemMesasBinding.tvFecha.text = mesa.fecha
         holder.itemMesasBinding.tvLocacion.text = mesa.locacion
         holder.itemMesasBinding.tvRenta.text = mesa.monto
+        if(mesa.asistencia == "1"){
+            holder.itemMesasBinding.cardView.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#57A639"))
+        }else{
+            holder.itemMesasBinding.cardView.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+        }
+
 
         holder.itemMesasBinding.cardView.setOnClickListener {
 
@@ -50,6 +57,7 @@ class MesasAdapter(
             val fecha = mesas[position].fecha
             val locacion = mesas[position].locacion
             val renta = mesas[position].monto
+            val asistencia = mesas[position].asistencia
 
             val toPass = Bundle()
             toPass.putString("idplan", idpplan)
@@ -60,6 +68,7 @@ class MesasAdapter(
             toPass.putString("fecha", fecha)
             toPass.putString("locacion", locacion)
             toPass.putString("renta", renta)
+            toPass.putString("asistencia", asistencia)
 
             val intent = Intent(context, AsistenciaActivity::class.java)
             intent.putExtras(toPass)

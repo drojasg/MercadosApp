@@ -6,4 +6,232 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.ui.main.CorteActivity">
 
+    <TextView
+        android:id="@+id/tvTituloCorte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="30dp"
+        android:textSize="40dp"
+        android:text="Corte"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"/>
+
+    <TextView
+        android:id="@+id/tvIngreseCantidades"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvTituloCorte"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="20dp"
+        android:text="Ingrese las cantidaddes: "/>
+
+    <TextView
+        android:id="@+id/tvDolares"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvIngreseCantidades"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="20dp"
+        android:text="Dolares: "/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tiUsd"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        app:layout_constraintTop_toBottomOf="@id/tvIngreseCantidades"
+        app:layout_constraintLeft_toRightOf="@id/tvDolares"
+        android:hint="USD"
+        app:endIconMode="clear_text"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="80dp">
+
+        <EditText
+            android:id="@+id/etUsd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tvPesos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvDolares"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="20dp"
+        android:text="Pesos: "/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tiPesos"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        app:layout_constraintTop_toBottomOf="@id/tiUsd"
+        app:layout_constraintLeft_toRightOf="@id/tvPesos"
+        android:hint="PESOS"
+        app:endIconMode="clear_text"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="94dp">
+
+
+        <EditText
+            android:id="@+id/etPesos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tvEuros"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvPesos"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="20dp"
+        android:text="Euros: "/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tiEur"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        app:layout_constraintTop_toBottomOf="@id/tiPesos"
+        app:layout_constraintLeft_toRightOf="@id/tvEuros"
+        android:hint="EUR"
+        app:endIconMode="clear_text"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="98dp">
+
+        <EditText
+            android:id="@+id/etEuros"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tvLibras"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvEuros"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="20dp"
+        android:text="Libras: "/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tiLib"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        app:layout_constraintTop_toBottomOf="@id/tiEur"
+        app:layout_constraintLeft_toRightOf="@id/tvLibras"
+        android:hint="GBP"
+        app:endIconMode="clear_text"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="95dp">
+
+        <EditText
+            android:id="@+id/etLibras"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <View
+        android:id="@+id/vSeparador"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        app:layout_constraintTop_toBottomOf="@id/tvLibras"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@color/black"/>
+
+    <TextView
+        android:id="@+id/tvNumeroBolsa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/vSeparador"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="20dp"
+        android:text="Numero de bolsa: "/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tiNumeroBolsa"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        app:layout_constraintTop_toBottomOf="@id/tvNumeroBolsa"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:hint="Bolsa"
+        app:endIconMode="clear_text"
+        android:layout_marginTop="10dp">
+
+        <EditText
+            android:id="@+id/etNumeroBolsa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tvRecibe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tiNumeroBolsa"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="20dp"
+        android:text="Quien recibe: "/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        app:layout_constraintTop_toBottomOf="@id/tvRecibe"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:hint="Nombre completo"
+        app:endIconMode="clear_text"
+        android:layout_marginTop="10dp">
+
+        <EditText
+            android:id="@+id/etRecibeBolsa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGuardarCorte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tiNumeroBolsa"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="125dp"
+        android:text="Guardar"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,5 +8,6 @@ data class LocacionResponse(
     var giro: String,
     var fecha: String,
     var locacion: String,
-    var monto: String
+    var monto: String,
+    var asistencia: String
 )

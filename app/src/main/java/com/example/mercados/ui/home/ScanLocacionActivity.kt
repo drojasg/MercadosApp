@@ -42,7 +42,6 @@ class ScanLocacionActivity : AppCompatActivity() {
                 val resultado = result.contents
                 prefs.saveLocacion("${resultado}")
                 intent.putExtra("id_locacion", resultado)
-                toast("$resultado")
                 startActivity(intent)
             }
         }else{
