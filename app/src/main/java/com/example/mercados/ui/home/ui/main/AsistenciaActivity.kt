@@ -1,14 +1,9 @@
 package com.example.mercados.ui.home.ui.main
 
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.graphics.green
-import androidx.core.graphics.toColor
 import androidx.core.view.isVisible
-import com.example.mercados.R
 import com.example.mercados.data.network.MyApiMesas
 import com.example.mercados.databinding.ActivityAsistenciaBinding
 import com.example.mercados.util.toast
@@ -34,6 +29,7 @@ class AsistenciaActivity : AppCompatActivity() {
         val locacion = bundle?.get("locacion")
         val renta = bundle?.get("renta")
         val asistencia = bundle?.get("asistencia")
+        val falta = bundle?.get("falta")
 
         binding.idplan.text = (idplan as CharSequence?)!!
         binding.idmesa.text = (idmesa as CharSequence?)!!
@@ -45,6 +41,11 @@ class AsistenciaActivity : AppCompatActivity() {
         binding.renta.text = renta as CharSequence?
         if(asistencia == "1"){
             binding.btnAsistencia.isVisible = false
+            binding.btnFalta.isVisible = false
+        }
+        else if(falta == "1"){
+            binding.btnAsistencia.isVisible = false
+            binding.btnFalta.isVisible = false
         }
 
         val toPass = Bundle()
@@ -60,7 +61,10 @@ class AsistenciaActivity : AppCompatActivity() {
         val intent = Intent(this, SaldosActivity::class.java)
         intent.putExtras(toPass)
 
-        binding.btnAsistencia.setOnClickListener { setAsistencia("$idplan") }
+        var estadoAsistencia = 1
+        var estadoFalta = 0
+        binding.btnAsistencia.setOnClickListener { setAsistencia("$idplan", "$estadoAsistencia") }
+        binding.btnFalta.setOnClickListener { setAsistencia("$idplan", "$estadoFalta") }
         binding.btnPagos.setOnClickListener{ startActivity(intent)}
     }
 
@@ -71,18 +75,25 @@ class AsistenciaActivity : AppCompatActivity() {
             .build()
     }
 
-    private fun setAsistencia(idmesa:String){
+    private fun setAsistencia(idmesa:String, estado: String){
         CoroutineScope(Dispatchers.IO).launch {
-            var call = getRetrofit().create(MyApiMesas::class.java).setAsistenia("$idmesa")
+            var call = getRetrofit().create(MyApiMesas::class.java).setAsistenia("$idmesa", "$estado")
             var body = call.body()
             runOnUiThread {
                 if(call.isSuccessful){
                     if (body != null) {
-                        toast("Asistencia guardada, Asistencia numero: ${body.id_asistencia}")
-                        super.finish()
+                        if (body.estado == "0"){
+                            toast("Falta registrada de manera exitosa")
+                            super.finish()
+                        }
+                        else if(body.estado == "1"){
+                            toast("Asistencia guardada, Asistencia numero: ${body.id_asistencia}")
+                            super.finish()
+                        }
                     }
                 }
             }
         }
     }
+
 }

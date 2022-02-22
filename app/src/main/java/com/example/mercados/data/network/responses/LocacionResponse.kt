@@ -9,5 +9,6 @@ data class LocacionResponse(
     var fecha: String,
     var locacion: String,
     var monto: String,
-    var asistencia: String
+    var asistencia: String,
+    var falta : String
 )

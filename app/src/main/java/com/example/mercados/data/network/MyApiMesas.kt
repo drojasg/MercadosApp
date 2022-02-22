@@ -11,6 +11,9 @@ interface MyApiMesas {
     @GET("getMesaSpinner/{id_locacion}")
     suspend fun getMesaSpinner(@Path("id_locacion") id_locaicon: String): Response<List<SpinnerResponse>>
 
+    @GET("conceptos")
+    suspend fun getConceptsoSpinner(): Response<List<ConceptosSpinnerResponse>>
+
     @GET("getEstadoCuenta/{id_proveedor}")
     suspend fun  getEstadoCuenta(@Path("id_proveedor") id_proveedor: String): Response<List<EstadoDeCuentaResponse>>
 
@@ -25,7 +28,8 @@ interface MyApiMesas {
 
     @FormUrlEncoded
     @POST("create/asistencia")
-    suspend fun setAsistenia( @Field("id_plan") id_plan: String): Response<AsistenciasResponse>
+    suspend fun setAsistenia( @Field("id_plan") id_plan: String,
+                              @Field("estado") estado:String): Response<AsistenciasResponse>
 
     @FormUrlEncoded
     @POST("create/plan")

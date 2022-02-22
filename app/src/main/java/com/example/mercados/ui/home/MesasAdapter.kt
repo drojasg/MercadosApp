@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -40,11 +41,13 @@ class MesasAdapter(
         holder.itemMesasBinding.tvLocacion.text = mesa.locacion
         holder.itemMesasBinding.tvRenta.text = mesa.monto
         if(mesa.asistencia == "1"){
-            holder.itemMesasBinding.cardView.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#57A639"))
-        }else{
+            holder.itemMesasBinding.cardView.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#308446"))
+        }else if(mesa.falta == "1"){
+            holder.itemMesasBinding.cardView.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#E83845"))
+        }
+        else{
             holder.itemMesasBinding.cardView.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
         }
-
 
         holder.itemMesasBinding.cardView.setOnClickListener {
 
@@ -58,6 +61,7 @@ class MesasAdapter(
             val locacion = mesas[position].locacion
             val renta = mesas[position].monto
             val asistencia = mesas[position].asistencia
+            val falta = mesas[position].falta
 
             val toPass = Bundle()
             toPass.putString("idplan", idpplan)
@@ -69,6 +73,7 @@ class MesasAdapter(
             toPass.putString("locacion", locacion)
             toPass.putString("renta", renta)
             toPass.putString("asistencia", asistencia)
+            toPass.putString("falta", falta)
 
             val intent = Intent(context, AsistenciaActivity::class.java)
             intent.putExtras(toPass)

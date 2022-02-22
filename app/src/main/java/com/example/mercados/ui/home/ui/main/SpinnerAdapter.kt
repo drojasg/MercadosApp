@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import android.widget.*
 import com.example.mercados.R
 import com.example.mercados.data.network.responses.SpinnerResponse
-import com.example.mercados.ui.home.ui.main.Mercados.Companion.prefs
-import kotlinx.coroutines.selects.select
 
-class SpinnerAdapter internal constructor(internal var context: Context, internal var list: List<SpinnerResponse>):BaseAdapter(){
+class SpinnerAdapter internal constructor(internal var context: Context,
+                                          internal var list: List<SpinnerResponse>):BaseAdapter(){
 
     override fun getCount(): Int {
         return list.size
@@ -36,6 +35,4 @@ class SpinnerAdapter internal constructor(internal var context: Context, interna
 
         return textView;
     }
-
-
 }

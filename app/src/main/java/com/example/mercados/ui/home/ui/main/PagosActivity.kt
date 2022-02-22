@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.RadioButton
 import com.example.mercados.R
 import com.example.mercados.data.network.MyApiMesas
+import com.example.mercados.data.network.responses.ConceptosSpinnerResponse
 import com.example.mercados.databinding.ActivityPagosBinding
 import com.example.mercados.util.toast
 import kotlinx.coroutines.CoroutineScope
@@ -20,6 +21,8 @@ import kotlin.math.floor
 class PagosActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPagosBinding
+    private lateinit var adapter: SpinnerConceptosAdapter
+    private val conceptosList = mutableListOf<ConceptosSpinnerResponse>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityPagosBinding.inflate(layoutInflater)
@@ -45,6 +48,10 @@ class PagosActivity : AppCompatActivity() {
         val year = c.get(Calendar.YEAR)
         val fecha = "$realmonth-$day-$year"
 
+        val spinner = binding.spnrConceptos
+        getConceptosSpinner()
+        initSpinner()
+
         binding.tvSaldoPendiente.text = total.toString()
         binding.btnPagar.setOnClickListener { doMath(cantidad, pago.toString().toFloat(), total as Float)
         setNewPago("$idproveedor", "$total", "$pago", "$fecha")}
@@ -52,6 +59,11 @@ class PagosActivity : AppCompatActivity() {
 
     fun printCantidad(cantidad : ArrayList<Int>){
         println(cantidad)
+    }
+
+    private fun initSpinner(){
+        adapter = SpinnerConceptosAdapter(this, conceptosList)
+        binding.spnrConceptos.adapter = adapter
     }
 
     fun doMath(cantidad: ArrayList<Int>, _x : Float, total:Float){
@@ -83,6 +95,27 @@ class PagosActivity : AppCompatActivity() {
             .baseUrl("http://d037-189-174-131-177.ngrok.io/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    private fun getConceptosSpinner(){
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = getRetrofit().create(MyApiMesas::class.java).getConceptsoSpinner()
+            val conceptos = call.body()
+            runOnUiThread {
+                if (call.isSuccessful){
+                    val lista = conceptos ?: emptyList()
+                    conceptosList.clear()
+                    conceptosList.addAll(lista)
+                    adapter.notifyDataSetChanged()
+                }else{
+                    showError()
+                }
+            }
+        }
+    }
+
+    private fun showError() {
+        toast("Ha ocurrido un Error")
     }
 
     private fun setNewPago(id_proveedor:String, monto_total:String, pago:String, fecha_pago:String){
