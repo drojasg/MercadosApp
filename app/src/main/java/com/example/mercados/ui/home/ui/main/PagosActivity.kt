@@ -3,6 +3,7 @@ package com.example.mercados.ui.home.ui.main
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
 import android.widget.RadioButton
 import com.example.mercados.R
 import com.example.mercados.data.network.MyApiMesas
@@ -49,12 +50,24 @@ class PagosActivity : AppCompatActivity() {
         val fecha = "$realmonth-$day-$year"
 
         val spinner = binding.spnrConceptos
+        var idconcepto = ""
         getConceptosSpinner()
         initSpinner()
 
+        spinner.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener{
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    idconcepto = conceptosList.get(p2).id_concepto
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    conceptosList.get(0).id_concepto
+                }
+            }
+
         binding.tvSaldoPendiente.text = total.toString()
         binding.btnPagar.setOnClickListener { doMath(cantidad, pago.toString().toFloat(), total as Float)
-        setNewPago("$idproveedor", "$total", "$pago", "$fecha")}
+        setNewPago("$idproveedor", "$idconcepto", "$total", "$pago", "$fecha")}
     }
 
     fun printCantidad(cantidad : ArrayList<Int>){
@@ -118,10 +131,10 @@ class PagosActivity : AppCompatActivity() {
         toast("Ha ocurrido un Error")
     }
 
-    private fun setNewPago(id_proveedor:String, monto_total:String, pago:String, fecha_pago:String){
+    private fun setNewPago(id_proveedor:String, id_concepto:String, monto_total:String, pago:String, fecha_pago:String){
         CoroutineScope(Dispatchers.IO).launch {
             var call = getRetrofit().create(MyApiMesas::class.java).createPago("$id_proveedor",
-                "$monto_total", "$pago", "$fecha_pago")
+                "$id_concepto", "$monto_total", "$pago", "$fecha_pago")
             var body = call.body()
             runOnUiThread {
                 if (call.isSuccessful){

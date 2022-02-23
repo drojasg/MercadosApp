@@ -41,6 +41,7 @@ interface MyApiMesas {
     @FormUrlEncoded
     @POST("createPago")
     suspend fun createPago( @Field("id_proveedor") id_proveedor: String,
+                            @Field("id_concepto") id_concepto: String,
                             @Field("monto_total") monto_total : String,
                             @Field("pago") pago : String,
                             @Field("fecha_pago") fecha_pago : String

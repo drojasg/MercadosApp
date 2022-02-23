@@ -39,16 +39,15 @@ class AddNewMesaActivity : AppCompatActivity(){
         var idmesa = ""
         spinner.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                idmesa = mesasList.get(p2).id_mesa
-                Log.d("AQUI ESTA EL ID!!", "$idmesa")
-            }
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    idmesa = mesasList.get(p2).id_mesa
+                    Log.d("AQUI ESTA EL ID!!", "$idmesa")
+                }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                mesasList.get(0).id_mesa
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    mesasList.get(0).id_mesa
+                }
             }
-
-        }
 
         val c = Calendar.getInstance()
         val day = c.get(Calendar.DAY_OF_MONTH)
