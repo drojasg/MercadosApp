@@ -3,8 +3,12 @@ package com.example.mercados.ui.home.ui.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import androidx.core.view.isVisible
+import androidx.databinding.adapters.AdapterViewBindingAdapter
 import com.example.mercados.data.network.MyApiMesas
+import com.example.mercados.data.network.responses.JustificacionesSpinnerResponse
 import com.example.mercados.databinding.ActivityAsistenciaBinding
 import com.example.mercados.util.toast
 import kotlinx.coroutines.CoroutineScope
@@ -14,7 +18,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class AsistenciaActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityAsistenciaBinding
+    private lateinit var adapter: SpinnerJustificacionesAdapter
+    private val justificacionesList = mutableListOf<JustificacionesSpinnerResponse>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityAsistenciaBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -63,21 +71,65 @@ class AsistenciaActivity : AppCompatActivity() {
 
         var estadoAsistencia = 1
         var estadoFalta = 0
-        binding.btnAsistencia.setOnClickListener { setAsistencia("$idplan", "$estadoAsistencia") }
-        binding.btnFalta.setOnClickListener { setAsistencia("$idplan", "$estadoFalta") }
+
+        val spinner = binding.spnrJustificaciones
+        getJustificacionesSpinner()
+        initSpinner()
+
+        var idjustificacion = ""
+        spinner.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener{
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    idjustificacion = justificacionesList.get(p2).id_justificacion
+                }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                justificacionesList.get(0).id_justificacion
+            }
+
+            }
+
+        binding.btnAsistencia.setOnClickListener { setAsistencia("$idplan", "$estadoAsistencia", "$idjustificacion") }
+        binding.btnFalta.setOnClickListener { setAsistencia("$idplan", "$estadoFalta", "$idjustificacion") }
         binding.btnPagos.setOnClickListener{ startActivity(intent)}
     }
 
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://d037-189-174-131-177.ngrok.io/api/")
+            .baseUrl("http://e1b0-189-174-127-179.ngrok.io/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
-    private fun setAsistencia(idmesa:String, estado: String){
+    fun initSpinner(){
+        adapter = SpinnerJustificacionesAdapter(this, justificacionesList)
+        binding.spnrJustificaciones.adapter = adapter
+    }
+
+    private fun getJustificacionesSpinner(){
         CoroutineScope(Dispatchers.IO).launch {
-            var call = getRetrofit().create(MyApiMesas::class.java).setAsistenia("$idmesa", "$estado")
+            val call = getRetrofit().create(MyApiMesas::class.java).getJustificaciones()
+            val justificaciones = call.body()
+            runOnUiThread {
+                if (call.isSuccessful){
+                    val lista = justificaciones ?: emptyList()
+                    justificacionesList.clear()
+                    justificacionesList.addAll(lista)
+                    adapter.notifyDataSetChanged()
+                }else{
+                    showError()
+                }
+            }
+        }
+    }
+
+    private fun showError() {
+        toast("Ha ocurrido un error!")
+    }
+
+    private fun setAsistencia(idmesa:String, estado: String, idjustificacion: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            var call = getRetrofit().create(MyApiMesas::class.java).setAsistenia("$idmesa", "$estado", "$idjustificacion")
             var body = call.body()
             runOnUiThread {
                 if(call.isSuccessful){

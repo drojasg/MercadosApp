@@ -105,7 +105,7 @@ class PagosActivity : AppCompatActivity() {
 
     private fun getRetrofit() : Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://d037-189-174-131-177.ngrok.io/api/")
+            .baseUrl("http://e1b0-189-174-127-179.ngrok.io/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -142,6 +142,7 @@ class PagosActivity : AppCompatActivity() {
                         val idpago = body.id_pago
                         toast("Pago guardado correctamente. $idpago")
                         setPagos("$idpago")
+                        super.finish()
                     }
                 }
                 else{

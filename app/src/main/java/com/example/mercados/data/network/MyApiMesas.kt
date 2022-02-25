@@ -17,6 +17,9 @@ interface MyApiMesas {
     @GET("getEstadoCuenta/{id_proveedor}")
     suspend fun  getEstadoCuenta(@Path("id_proveedor") id_proveedor: String): Response<List<EstadoDeCuentaResponse>>
 
+    @GET("asistenciasJustificaciones")
+    suspend fun getJustificaciones(): Response<List<JustificacionesSpinnerResponse>>
+
     @GET("currentRate")
     suspend fun getCurrentRate(): Response<ExchangeUsdRateResponse>
 
@@ -29,7 +32,8 @@ interface MyApiMesas {
     @FormUrlEncoded
     @POST("create/asistencia")
     suspend fun setAsistenia( @Field("id_plan") id_plan: String,
-                              @Field("estado") estado:String): Response<AsistenciasResponse>
+                              @Field("estado") estado:String,
+                              @Field("id_justificacion") id_justificacion:String): Response<AsistenciasResponse>
 
     @FormUrlEncoded
     @POST("create/plan")
