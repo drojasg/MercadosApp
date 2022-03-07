@@ -24,7 +24,6 @@ class AddNewMesaActivity : AppCompatActivity(){
     private lateinit var adapter: SpinnerAdapter
     private val mesasList = mutableListOf<SpinnerResponse>()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityAddNewMesaBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
