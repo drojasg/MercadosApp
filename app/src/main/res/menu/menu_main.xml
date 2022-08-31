@@ -13,4 +13,9 @@
         android:title="Corte"
         app:showAsAction="always"/>
 
+    <item
+        android:id="@+id/infocorte"
+        android:title="info"
+        app:showAsAction="always"/>
+
 </menu>

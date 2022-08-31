@@ -10,4 +10,10 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="estado_de_cuenta">Estado de Cuenta</string>
     <string name="giro">Giro</string>
+
+    <string-array name="clima">
+        <item>Soleado</item>
+        <item>Nublado</item>
+        <item>Lluvia</item>
+    </string-array>
 </resources>

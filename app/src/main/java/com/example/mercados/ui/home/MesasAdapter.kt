@@ -14,6 +14,8 @@ import com.example.mercados.databinding.ItemMesasBinding
 import com.example.mercados.ui.home.ui.main.AsistenciaActivity
 import com.example.mercados.ui.home.ui.main.Mercados.Companion.prefs
 import com.example.mercados.ui.home.ui.main.RecyclerViewClickListener
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MesasAdapter(
     private val context: Context,
@@ -40,19 +42,11 @@ class MesasAdapter(
         holder.itemMesasBinding.tvFecha.text = mesa.fecha
         holder.itemMesasBinding.tvLocacion.text = mesa.locacion
         holder.itemMesasBinding.tvRenta.text = mesa.monto
-        if(mesa.asistencia == "1"){
-            holder.itemMesasBinding.cardView.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#308446"))
-        }else if(mesa.falta == "1"){
-            holder.itemMesasBinding.cardView.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#E83845"))
-        }
-        else{
-            holder.itemMesasBinding.cardView.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
-        }
 
-        holder.itemMesasBinding.cardView.setOnClickListener {
+        holder.itemMesasBinding.cvMesas.setOnClickListener {
 
-            listener.onRecyclerViewBtnClick(holder.itemMesasBinding.cardView, mesas[position])
-            val idpplan = mesas[position].id_plan
+            listener.onRecyclerViewBtnClick(holder.itemMesasBinding.cvMesas, mesas[position])
+            val idplan = mesas[position].id_plan
             val idmesa = mesas[position].id_mesa
             val idproveedor = mesas[position].id_proveedor
             val artesano = mesas[position].artesano
@@ -64,7 +58,7 @@ class MesasAdapter(
             val falta = mesas[position].falta
 
             val toPass = Bundle()
-            toPass.putString("idplan", idpplan)
+            toPass.putString("idplan", idplan)
             toPass.putString("idmesa", idmesa)
             toPass.putString("idproveedor", idproveedor)
             toPass.putString("artesano", artesano)
@@ -79,6 +73,15 @@ class MesasAdapter(
             intent.putExtras(toPass)
             context.startActivity(intent)
 
+
+        if(mesa.asistencia == "1" && mesa.falta == "0"){
+                   holder.itemMesasBinding.cvMesas.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#308446"))
+        }else if(mesa.falta == "1" && mesa.asistencia == "0"){
+            holder.itemMesasBinding.cvMesas.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#E83845"))
+        }
+        else{
+            holder.itemMesasBinding.cvMesas.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+        }
             //holder.itemMesasBinding.cardView.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#57A639"))
         }
     }
@@ -86,5 +89,4 @@ class MesasAdapter(
     inner class MesasViewHolder(
         val itemMesasBinding: ItemMesasBinding
     ) : RecyclerView.ViewHolder(itemMesasBinding.root)
-
 }

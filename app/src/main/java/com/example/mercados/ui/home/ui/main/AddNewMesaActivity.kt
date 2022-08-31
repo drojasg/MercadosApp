@@ -83,7 +83,7 @@ class AddNewMesaActivity : AppCompatActivity(){
 
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://e1b0-189-174-127-179.ngrok.io/api/")
+            .baseUrl("https://shiny-roses-call-189-174-83-173.loca.lt/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

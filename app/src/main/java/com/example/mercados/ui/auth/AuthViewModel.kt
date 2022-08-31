@@ -1,9 +1,11 @@
 package com.example.mercados.ui.auth
 
+import android.content.SharedPreferences
 import android.view.View
 import androidx.lifecycle.ViewModel
 import com.example.mercados.data.network.responses.AuthResponse
 import com.example.mercados.data.repositories.UserRepository
+import com.example.mercados.ui.home.ui.main.Mercados.Companion.prefs
 import com.example.mercados.util.ApiException
 import com.example.mercados.util.Coroutines
 
@@ -28,7 +30,10 @@ class AuthViewModel: ViewModel(){
                     authListener?.onSuccess(it)
                     return@main
                 }
+                prefs.clearUsercloud()
+                prefs.saveUsercloud(authResponse.usercloud!!)
                 authListener?.onFailure(authResponse.error!!)
+
             }catch (e: ApiException){
                 authListener?.onFailure(e.message!!)
             }

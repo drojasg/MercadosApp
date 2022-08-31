@@ -28,17 +28,20 @@ class EstadoDeCuentaAdapter(
 
         holder.itemPagosBinding.tvGiroEdC.text = estadoDeCuenta.giro
         holder.itemPagosBinding.tvArtesanoEdC.text = estadoDeCuenta.artesano
-        holder.itemPagosBinding.tvRentaEdC.text = estadoDeCuenta.monto.toString()
         holder.itemPagosBinding.tvLocacionEdC.text = estadoDeCuenta.locacion
         holder.itemPagosBinding.tvFechaEdC.text = estadoDeCuenta.fecha
 
-        /*var total = estadosDeCuenta.sumOf { it.cantidad.toDouble() }
-        prefs.saveTotal("${total}")*/
+        if(estadoDeCuenta.monto - estadoDeCuenta.monto_pago < estadoDeCuenta.monto){
+            holder.itemPagosBinding.tvRentaEdC.text = estadoDeCuenta.pendiente.toString()
+        }else{
+            holder.itemPagosBinding.tvRentaEdC.text = estadoDeCuenta.monto.toString()
+        }
+
     }
 
     override fun getItemCount() = estadosDeCuenta.size
 
     inner class EstadosDeCuentaViewHolder(
-        val itemPagosBinding: ItemPagosBinding,
+        val itemPagosBinding: ItemPagosBinding
     ) : RecyclerView.ViewHolder(itemPagosBinding.root)
 }

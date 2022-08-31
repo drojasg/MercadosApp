@@ -50,10 +50,12 @@ class SaldosActivity : AppCompatActivity() {
 
     private fun getRetrofit() : Retrofit{
         return Retrofit.Builder()
-            .baseUrl("http://e1b0-189-174-127-179.ngrok.io/api/")
+            .baseUrl("https://shiny-roses-call-189-174-83-173.loca.lt/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
+
 
     private fun getEstadosCuenta(id_proveedor : String){
         CoroutineScope(Dispatchers.IO).launch {
@@ -63,13 +65,15 @@ class SaldosActivity : AppCompatActivity() {
                 if (call.isSuccessful){
                     val lista = estadosDeCuenta ?: emptyList()
                     estadosList.clear()
-                    estadosList.addAll(lista)
+                    estadosList.addAll(lista) //CHECAR LA SUMA DE LOS MONTOS!!! PARA QUE SE ACTUALICE!
                     adapter.notifyDataSetChanged()
                     prefs.saveTotal("${estadosList.sumOf { it.monto.toDouble()}}")
                     val total = prefs.getTotal()
                     println("$total")
                     toPass.putFloat("total",total.toFloat())
-                    binding.tvSaldoP.text = total
+                    val pagado = estadosList.sumOf { it.monto_pago.toDouble() }
+                    val totalReal = total.toDouble() - pagado
+                    binding.tvSaldoP.text = totalReal.toString()
 
                     for(estado in estadosList) {
                         val cantidad = estado.monto

@@ -24,6 +24,7 @@ class PagosActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPagosBinding
     private lateinit var adapter: SpinnerConceptosAdapter
     private val conceptosList = mutableListOf<ConceptosSpinnerResponse>()
+    private var current: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityPagosBinding.inflate(layoutInflater)
@@ -65,9 +66,22 @@ class PagosActivity : AppCompatActivity() {
                 }
             }
 
+        /*val textWatcher = TWMoney(binding.etPago).apply {
+            moneyPrefix= "$ "
+            separator = ','
+            decimal = '.'
+        }
+
+        binding.etPago.addTextChangedListener(textWatcher)
+        binding.etPago.requestFocus()*/
+
         binding.tvSaldoPendiente.text = total.toString()
-        binding.btnPagar.setOnClickListener { doMath(cantidad, pago.toString().toFloat(), total as Float)
-        setNewPago("$idproveedor", "$idconcepto", "$total", "$pago", "$fecha")}
+        binding.btnPagar.setOnClickListener { if(pago.toString().toInt() < 0){
+            toast("Estas ingresando un valor incorrecto, por favor corrigelo.")
+        }else{
+            doMath(cantidad, pago.toString().toFloat(), total as Float)
+            setNewPago("$idproveedor", "$idconcepto", "$total", "$pago", "$fecha")}
+        }
     }
 
     fun printCantidad(cantidad : ArrayList<Int>){
@@ -96,7 +110,6 @@ class PagosActivity : AppCompatActivity() {
                 x = b
                 println("Aqui dentro del elif agrego el: $x")
                 if (x <= 0){
-
                 }
             }
         }
@@ -105,7 +118,7 @@ class PagosActivity : AppCompatActivity() {
 
     private fun getRetrofit() : Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://e1b0-189-174-127-179.ngrok.io/api/")
+            .baseUrl("https://shiny-roses-call-189-174-83-173.loca.lt/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

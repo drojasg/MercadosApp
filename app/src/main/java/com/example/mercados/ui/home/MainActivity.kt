@@ -1,12 +1,19 @@
 package com.example.mercados.ui.home
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.Color.GREEN
+import android.hardware.camera2.params.ColorSpaceTransform
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.cardview.widget.CardView
+import androidx.core.graphics.toColor
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mercados.R
 import com.example.mercados.data.network.MyApiMesas
@@ -20,7 +27,10 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.load.engine.executor.GlideExecutor.UncaughtThrowableStrategy.LOG
+import com.example.mercados.data.network.responses.AsistenciasResponse
 import com.example.mercados.ui.home.ui.main.CorteActivity
+import com.example.mercados.ui.home.ui.main.CorteReviewActivity
 import com.example.mercados.ui.home.ui.main.Mercados.Companion.prefs
 import com.example.mercados.util.toast
 
@@ -29,14 +39,16 @@ class MainActivity : AppCompatActivity(), RecyclerViewClickListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: MesasAdapter
     private val mesasList = mutableListOf<LocacionResponse>()
+    private val asistenciasList = mutableListOf<AsistenciasResponse>()
     var swipeRefreshLayout: SwipeRefreshLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val locacion = intent.getStringExtra("id_locacion")
+        val locacion = prefs.getLocacion()
         getMesas("$locacion")
+        getAsistencias()
 
         initRecyclerView()
 
@@ -53,13 +65,17 @@ class MainActivity : AppCompatActivity(), RecyclerViewClickListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId){
-            R.id.nuevo->{
-                val intent = Intent(this, AddNewMesaActivity::class.java )
+        when (item.itemId) {
+            R.id.nuevo -> {
+                val intent = Intent(this, AddNewMesaActivity::class.java)
                 startActivity(intent)
             }
-            R.id.corte->{
+            R.id.corte -> {
                 val intent = Intent(this, CorteActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.infocorte -> {
+                val intent = Intent(this, CorteReviewActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -72,31 +88,44 @@ class MainActivity : AppCompatActivity(), RecyclerViewClickListener {
         binding.rvMesas.adapter = adapter
     }
 
-    private fun getRetrofit(): Retrofit{
+    private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://e1b0-189-174-127-179.ngrok.io/api/")
+            .baseUrl("https://shiny-roses-call-189-174-83-173.loca.lt/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
-    private fun getMesas(id_locacion:String){
+    private fun getMesas(id_locacion: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val call = getRetrofit().create(MyApiMesas::class.java).getMesas("$id_locacion")
             val mesas = call.body()
             runOnUiThread {
-                if (call.isSuccessful){
+                if (call.isSuccessful) {
                     val lista = mesas ?: emptyList()
                     mesasList.clear()
                     mesasList.addAll(lista)
-                    if(mesasList.isEmpty()){
-                        toast("La lista está vacía")
-                    }else{
+                    if (mesasList.isEmpty()) {
+                    } else {
                         prefs.saveIdPlan("${mesasList[0].id_plan}")
                     }
 
                     adapter.notifyDataSetChanged()
-                }else{
+                } else {
                     showError()
+                }
+            }
+        }
+    }
+
+    private fun getAsistencias() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = getRetrofit().create(MyApiMesas::class.java).getAsistencia()
+            val asistencias = call.body()
+            runOnUiThread {
+                if (call.isSuccessful) {
+                    val lista = asistencias ?: emptyList()
+                    asistenciasList.clear()
+                    asistenciasList.addAll(lista)
                 }
             }
         }

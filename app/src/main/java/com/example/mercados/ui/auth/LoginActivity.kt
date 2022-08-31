@@ -1,13 +1,16 @@
 package com.example.mercados.ui.auth
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.TextKeyListener.clear
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.example.mercados.R
 import com.example.mercados.databinding.ActivityLoginBinding
 import com.example.mercados.ui.home.ScanLocacionActivity
+import com.example.mercados.ui.home.ui.main.Mercados.Companion.prefs
 import com.example.mercados.util.hide
 import com.example.mercados.util.show
 import com.example.mercados.util.toast
@@ -26,19 +29,23 @@ class LoginActivity : AppCompatActivity(), AuthListener {
         binding.viewmodel = viewModel
 
         viewModel.authListener = this
-
     }
 
     override fun onStarted() {
         bindingv.progressBar.show()
     }
 
-    override fun onSuccess(status: String ) {
+    override fun onSuccess(status: String) {
         toast("${status}: Todo Bien")
         val intent = Intent(this@LoginActivity, ScanLocacionActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }
+
+    /*override fun onSuccess2(usercloud: String) {
+        toast("${usercloud}")
+        prefs.saveUsercloud(usercloud)
+    }*/
 
     override fun onFailure(message: String) {
         bindingv.progressBar.hide()

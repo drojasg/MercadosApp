@@ -7,6 +7,10 @@ data class CorteResponse(
     var pesos : String,
     var eur : String,
     var libras : String,
+    var tipo_cambio_pesos : String,
+    var tipo_cambio_eur : String,
+    var tipo_cambio_libras : String,
     var numero_bolsa : String,
     var recibe_bolsa : String,
+    var fecha : String
 )

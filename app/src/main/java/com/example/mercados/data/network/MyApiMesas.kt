@@ -29,6 +29,18 @@ interface MyApiMesas {
     @GET("currentGbpRate")
     suspend fun getCurrentGbpRate(): Response<ExchangeGbpToUsdRateResponse>
 
+    @GET("check/{locacion}")
+    suspend fun getCheckInfoLocacion(@Path("locacion") locacion: String): Response<List<CheckInfoLocacionResponse>>
+
+    @GET("corteDia/{locacion}")
+    suspend fun getCorteDia(@Path("locacion") locacion: String): Response<List<CorteResponse>>
+
+    @GET("asistencias")
+    suspend fun getAsistencia():Response<List<AsistenciasResponse>>
+
+    @GET("asitenciasComp")
+    suspend fun getAsistenciasComp():Response<List<AsistenciasCompResponse>>
+
     @FormUrlEncoded
     @POST("create/asistencia")
     suspend fun setAsistenia( @Field("id_plan") id_plan: String,
@@ -58,7 +70,20 @@ interface MyApiMesas {
                              @Field("pesos") pesos: String,
                              @Field("eur") eur: String,
                              @Field("libras") libras: String,
+                             @Field("tipo_cambio_pesos") tipo_cambio_pesos: String,
+                             @Field("tipo_cambio_eur") tipo_cambio_eur: String,
+                             @Field("tipo_cambio_libras") tipo_cambio_libras: String,
                              @Field("numero_bolsa") numero_bolsa: String,
-                             @Field("recibe_bolsa") recibe_bolsa: String
+                             @Field("recibe_bolsa") recibe_bolsa: String,
+                             @Field("fecha") fecha: String,
+                             @Field("usuario_creacion") usuario_creacion: String
     ) : Response<CorteResponse>
+
+    @FormUrlEncoded
+    @POST("createInfoLocacion")
+    suspend fun createInfoLocacion(@Field("id_locacion") id_locacion: String,
+                                   @Field("ocupacion") ocupacion: String,
+                                   @Field("clima") clima: String,
+                                   @Field("fecha") fecha: String
+    ) : Response<InfoLocacionResponse>
 }

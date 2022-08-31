@@ -1,9 +1,6 @@
 package com.example.mercados.data.network
 
 import com.example.mercados.data.network.responses.AuthResponse
-import com.example.mercados.data.network.responses.LocacionResponse
-import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -21,7 +18,7 @@ interface MyApi {
     companion object{
         operator fun invoke() : MyApi{
             return Retrofit.Builder()
-                .baseUrl("http://e1b0-189-174-127-179.ngrok.io/api/")
+                .baseUrl("https://shiny-roses-call-189-174-83-173.loca.lt/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(MyApi::class.java)

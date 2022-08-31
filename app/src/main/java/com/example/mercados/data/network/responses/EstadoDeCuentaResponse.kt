@@ -6,5 +6,7 @@ data class EstadoDeCuentaResponse(
     var giro : String,
     var locacion : String,
     var monto : Float,
+    var monto_pago : Float,
+    var pendiente : Float,
     var fecha : String
 )

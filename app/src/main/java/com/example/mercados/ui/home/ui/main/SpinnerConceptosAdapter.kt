@@ -9,9 +9,10 @@ import android.widget.TextView
 import com.example.mercados.R
 import com.example.mercados.data.network.responses.ConceptosSpinnerResponse
 
-class SpinnerConceptosAdapter internal constructor(internal var context: Context,
-                                                   internal var list: List<ConceptosSpinnerResponse>
-): BaseAdapter(){
+class SpinnerConceptosAdapter
+internal constructor(internal var context: Context,
+                     internal var list: List<ConceptosSpinnerResponse>): BaseAdapter(){
+
     override fun getCount(): Int {
         return list.size
     }

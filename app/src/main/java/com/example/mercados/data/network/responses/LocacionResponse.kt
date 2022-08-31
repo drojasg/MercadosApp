@@ -10,5 +10,5 @@ data class LocacionResponse(
     var locacion: String,
     var monto: String,
     var asistencia: String,
-    var falta : String
+    var falta: String
 )

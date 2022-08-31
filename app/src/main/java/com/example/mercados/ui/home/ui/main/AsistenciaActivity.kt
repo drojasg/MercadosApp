@@ -1,12 +1,15 @@
 package com.example.mercados.ui.home.ui.main
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import androidx.core.view.isVisible
 import androidx.databinding.adapters.AdapterViewBindingAdapter
+import com.example.mercados.R
 import com.example.mercados.data.network.MyApiMesas
 import com.example.mercados.data.network.responses.JustificacionesSpinnerResponse
 import com.example.mercados.databinding.ActivityAsistenciaBinding
@@ -47,9 +50,11 @@ class AsistenciaActivity : AppCompatActivity() {
         binding.fecha.text = (fecha as CharSequence?)!!
         binding.locacion.text = (locacion as CharSequence?)!!
         binding.renta.text = renta as CharSequence?
+
         if(asistencia == "1"){
             binding.btnAsistencia.isVisible = false
             binding.btnFalta.isVisible = false
+
         }
         else if(falta == "1"){
             binding.btnAsistencia.isVisible = false
@@ -92,11 +97,12 @@ class AsistenciaActivity : AppCompatActivity() {
         binding.btnAsistencia.setOnClickListener { setAsistencia("$idplan", "$estadoAsistencia", "$idjustificacion") }
         binding.btnFalta.setOnClickListener { setAsistencia("$idplan", "$estadoFalta", "$idjustificacion") }
         binding.btnPagos.setOnClickListener{ startActivity(intent)}
+
     }
 
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://e1b0-189-174-127-179.ngrok.io/api/")
+            .baseUrl("https://shiny-roses-call-189-174-83-173.loca.lt/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -123,13 +129,9 @@ class AsistenciaActivity : AppCompatActivity() {
         }
     }
 
-    private fun showError() {
-        toast("Ha ocurrido un error!")
-    }
-
-    private fun setAsistencia(idmesa:String, estado: String, idjustificacion: String){
+    private fun setAsistencia(idplan:String, estado: String, idjustificacion: String){
         CoroutineScope(Dispatchers.IO).launch {
-            var call = getRetrofit().create(MyApiMesas::class.java).setAsistenia("$idmesa", "$estado", "$idjustificacion")
+            var call = getRetrofit().create(MyApiMesas::class.java).setAsistenia("$idplan", "$estado", "$idjustificacion")
             var body = call.body()
             runOnUiThread {
                 if(call.isSuccessful){
@@ -148,4 +150,7 @@ class AsistenciaActivity : AppCompatActivity() {
         }
     }
 
+    private fun showError() {
+        toast("Ha ocurrido un error!")
+    }
 }
