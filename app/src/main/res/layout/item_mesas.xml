@@ -58,8 +58,10 @@
                 android:id="@+id/tvRenta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="185dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginLeft="265dp"
+                android:layout_marginTop="15dp"
+                android:textStyle="bold"
+                android:textSize="17dp"
                 tools:text="Renta"/>
         </LinearLayout>
 
@@ -73,29 +75,40 @@
                 android:id="@+id/tvArtesano"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:layout_marginLeft="6dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                android:textStyle="bold"
+                android:textSize="17dp"
                 tools:text="Artesano" />
 
             <TextView
                 android:id="@+id/tvGiro"
-                android:layout_margin="6dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="17dp"
                 android:text="Giro" />
 
             <TextView
                 android:id="@+id/tvFecha"
-                android:layout_margin="6dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="17dp"
                 android:text="Fecha"/>
 
             <TextView
                 android:id="@+id/tvLocacion"
-                android:layout_margin="6dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="17dp"
                 android:text="Locaicon"/>
 
         </LinearLayout>

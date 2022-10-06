@@ -37,7 +37,7 @@ class CorteActivity : AppCompatActivity() {
         val libras = binding.etLibras.text
         val numeroBolsa = binding.etNumeroBolsa.text
         val recibeBolsa = binding.etRecibeBolsa.text
-        val idplan = prefs.getIdPlan()
+        val idlocacion = prefs.getLocacion()
 
         val c = Calendar.getInstance()
         val day = c.get(Calendar.DAY_OF_MONTH)
@@ -58,7 +58,7 @@ class CorteActivity : AppCompatActivity() {
             toast("Estas ingresando datos negativos, favor de corregir")
         }else{
                 setNewCorte(
-                    idplan, "$usd", "$pesos",
+                    "$idlocacion", "$usd", "$pesos",
                     "$euros", "$libras", "$tipo_cambio_pesos",
                     "$tipo_cambio_eur", "$tipo_cambio_libras",
                     "$numeroBolsa", "$recibeBolsa", "$fecha", "$usercloud"
@@ -66,12 +66,12 @@ class CorteActivity : AppCompatActivity() {
         }
         }
     }
-    private fun setNewCorte(id_plan: String, usd: String, pesos: String,
+    private fun setNewCorte(id_locacion:String, usd: String, pesos: String,
                             eur: String, libras: String, tipo_cambio_pesos: String,
                             tipo_cambio_eur: String, tipo_cambio_libras: String,
                             numeroBolsa: String, recibeBolsa: String, fecha: String, usuario_creacion: String){
         CoroutineScope(Dispatchers.IO).launch {
-            val call = getRetrofit().create(MyApiMesas::class.java).createCorte(id_plan, usd,
+            val call = getRetrofit().create(MyApiMesas::class.java).createCorte(id_locacion, usd,
             pesos, eur, libras, tipo_cambio_pesos, tipo_cambio_eur, tipo_cambio_libras, numeroBolsa, recibeBolsa, fecha, usuario_creacion)
             val body = call.body()
             runOnUiThread{
@@ -90,7 +90,7 @@ class CorteActivity : AppCompatActivity() {
 
     private fun getRetrofit(): Retrofit{
         return Retrofit.Builder()
-            .baseUrl("https://shiny-roses-call-189-174-83-173.loca.lt/api/")
+            .baseUrl("https://smart-hotels-lead-189-174-83-173.loca.lt/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

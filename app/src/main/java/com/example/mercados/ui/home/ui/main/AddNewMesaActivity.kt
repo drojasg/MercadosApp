@@ -83,7 +83,7 @@ class AddNewMesaActivity : AppCompatActivity(){
 
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://shiny-roses-call-189-174-83-173.loca.lt/api/")
+            .baseUrl("https://smart-hotels-lead-189-174-83-173.loca.lt/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

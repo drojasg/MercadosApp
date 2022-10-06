@@ -4,13 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mercados.R
 import com.example.mercados.data.network.responses.EstadoDeCuentaResponse
-import com.example.mercados.databinding.ActivityPagosBinding
 import com.example.mercados.databinding.ItemPagosBinding
-import com.example.mercados.ui.home.ui.main.Mercados.Companion.prefs
-import com.google.zxing.ResultMetadataType
-import java.lang.Double.sum
 
 class EstadoDeCuentaAdapter(
     private val context: Context,

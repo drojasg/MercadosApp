@@ -8,7 +8,10 @@ import android.widget.RadioButton
 import com.example.mercados.R
 import com.example.mercados.data.network.MyApiMesas
 import com.example.mercados.data.network.responses.ConceptosSpinnerResponse
+import com.example.mercados.data.network.responses.EstadoDeCuentaResponse
+import com.example.mercados.data.network.responses.PlanesSinPagoResponse
 import com.example.mercados.databinding.ActivityPagosBinding
+import com.example.mercados.ui.home.ui.main.Mercados.Companion.prefs
 import com.example.mercados.util.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +27,8 @@ class PagosActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPagosBinding
     private lateinit var adapter: SpinnerConceptosAdapter
     private val conceptosList = mutableListOf<ConceptosSpinnerResponse>()
-    private var current: String = ""
+    private val planesList = mutableListOf<PlanesSinPagoResponse>()
+    var ultimo: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityPagosBinding.inflate(layoutInflater)
@@ -34,7 +38,10 @@ class PagosActivity : AppCompatActivity() {
         val cantidad = bundle?.get("cantidad")
         val total = bundle?.get("total")
         val idproveedor = bundle?.get("idproveedor")
+        var id_plan = bundle?.get("ultimoP")
+        val idlocacion = prefs.getLocacion()
         println("el total es: $total")
+
         getExRate()
         getExEurRate()
         getExGbpRate()
@@ -58,29 +65,22 @@ class PagosActivity : AppCompatActivity() {
         spinner.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener{
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    idconcepto = conceptosList.get(p2).id_concepto
+                    idconcepto = conceptosList[p2].id_concepto
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
-                    conceptosList.get(0).id_concepto
+                    conceptosList[0].id_concepto
                 }
             }
-
-        /*val textWatcher = TWMoney(binding.etPago).apply {
-            moneyPrefix= "$ "
-            separator = ','
-            decimal = '.'
-        }
-
-        binding.etPago.addTextChangedListener(textWatcher)
-        binding.etPago.requestFocus()*/
 
         binding.tvSaldoPendiente.text = total.toString()
         binding.btnPagar.setOnClickListener { if(pago.toString().toInt() < 0){
             toast("Estas ingresando un valor incorrecto, por favor corrigelo.")
         }else{
             doMath(cantidad, pago.toString().toFloat(), total as Float)
-            setNewPago("$idproveedor", "$idconcepto", "$total", "$pago", "$fecha")}
+            setNewPago("$id_plan", "$idconcepto",
+                 "$idlocacion","$total",
+                "$pago", "$fecha")}
         }
     }
 
@@ -113,12 +113,13 @@ class PagosActivity : AppCompatActivity() {
                 }
             }
         }
+        println("que vamos a comer?")
         println(myArray)
     }
 
     private fun getRetrofit() : Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://shiny-roses-call-189-174-83-173.loca.lt/api/")
+            .baseUrl("https://smart-hotels-lead-189-174-83-173.loca.lt/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -144,10 +145,12 @@ class PagosActivity : AppCompatActivity() {
         toast("Ha ocurrido un Error")
     }
 
-    private fun setNewPago(id_proveedor:String, id_concepto:String, monto_total:String, pago:String, fecha_pago:String){
+    private fun setNewPago(id_plan:String, id_concepto:String,
+                           id_locacion:String, monto_total:String,
+                           pago:String, fecha_pago:String){
         CoroutineScope(Dispatchers.IO).launch {
-            var call = getRetrofit().create(MyApiMesas::class.java).createPago("$id_proveedor",
-                "$id_concepto", "$monto_total", "$pago", "$fecha_pago")
+            var call = getRetrofit().create(MyApiMesas::class.java).createPago("$id_plan",
+                "$id_concepto", "$id_locacion","$monto_total", "$pago", "$fecha_pago")
             var body = call.body()
             runOnUiThread {
                 if (call.isSuccessful){
@@ -166,8 +169,22 @@ class PagosActivity : AppCompatActivity() {
     }
 
     private fun setPagos(idpago : String){
-        toast("HOLIIIII-$idpago")
+        toast("aqui tengo solo un Holiii para ver que se imprima el id del pago-$idpago")
     }
+
+    /*private fun getPlanesSinPago(id_proveedor: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = getRetrofit().create(MyApiMesas::class.java).getPlanesSinPago("$id_proveedor")
+            val planes = call.body()
+            if (call.isSuccessful){
+                val lista = planes ?: emptyList()
+                planesList.clear()
+                planesList.addAll(lista)
+                ultimo = planesList.last().toString()
+            }
+            else ultimo = ""
+        }
+    }*/
 
     fun getExRate(){
         CoroutineScope(Dispatchers.IO).launch {

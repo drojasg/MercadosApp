@@ -44,7 +44,7 @@ class ScanLocacionActivity : AppCompatActivity() {
 
     private fun getRetrofit(): Retrofit{
         return Retrofit.Builder()
-            .baseUrl("https://shiny-roses-call-189-174-83-173.loca.lt/api/")
+            .baseUrl("https://smart-hotels-lead-189-174-83-173.loca.lt/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -67,11 +67,12 @@ class ScanLocacionActivity : AppCompatActivity() {
             }
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result:IntentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null){
             if(result.contents == null){
-                toast("{Sin información")
+                toast("Sin información")
             }else{
                 val locacion = result.contents
                 checkInfoLocacion("$locacion")

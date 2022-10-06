@@ -20,6 +20,9 @@ interface MyApiMesas {
     @GET("asistenciasJustificaciones")
     suspend fun getJustificaciones(): Response<List<JustificacionesSpinnerResponse>>
 
+    @GET("getPlanesSinPago/{id_proveedor}")
+    suspend fun getPlanesSinPago(@Path("id_proveedor") id_proveedor: String): Response<List<PlanesSinPagoResponse>>
+
     @GET("currentRate")
     suspend fun getCurrentRate(): Response<ExchangeUsdRateResponse>
 
@@ -56,8 +59,9 @@ interface MyApiMesas {
 
     @FormUrlEncoded
     @POST("createPago")
-    suspend fun createPago( @Field("id_proveedor") id_proveedor: String,
+    suspend fun createPago( @Field("id_plan") id_plan: String,
                             @Field("id_concepto") id_concepto: String,
+                            @Field("id_locacion") id_locaicon: String,
                             @Field("monto_total") monto_total : String,
                             @Field("pago") pago : String,
                             @Field("fecha_pago") fecha_pago : String
@@ -65,7 +69,7 @@ interface MyApiMesas {
 
     @FormUrlEncoded
     @POST("createCorte")
-    suspend fun createCorte( @Field("id_plan") id_plan: String,
+    suspend fun createCorte( @Field("id_locacion") id_locacion: String,
                              @Field("usd") usd: String,
                              @Field("pesos") pesos: String,
                              @Field("eur") eur: String,

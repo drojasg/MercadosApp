@@ -88,21 +88,19 @@ class AsistenciaActivity : AppCompatActivity() {
                     idjustificacion = justificacionesList.get(p2).id_justificacion
                 }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                justificacionesList.get(0).id_justificacion
-            }
-
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    justificacionesList.get(0).id_justificacion
+                }
             }
 
         binding.btnAsistencia.setOnClickListener { setAsistencia("$idplan", "$estadoAsistencia", "$idjustificacion") }
         binding.btnFalta.setOnClickListener { setAsistencia("$idplan", "$estadoFalta", "$idjustificacion") }
-        binding.btnPagos.setOnClickListener{ startActivity(intent)}
-
+        binding.btnPagos.setOnClickListener{ startActivity(intent) }
     }
 
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://shiny-roses-call-189-174-83-173.loca.lt/api/")
+            .baseUrl("https://smart-hotels-lead-189-174-83-173.loca.lt/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

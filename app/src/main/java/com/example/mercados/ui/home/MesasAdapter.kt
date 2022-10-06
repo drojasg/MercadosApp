@@ -43,6 +43,16 @@ class MesasAdapter(
         holder.itemMesasBinding.tvLocacion.text = mesa.locacion
         holder.itemMesasBinding.tvRenta.text = mesa.monto
 
+        if(mesa.asistencia == "1" && mesa.falta == "0"){
+            holder.itemMesasBinding.cvMesas.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#308446"))
+        }
+        else if(mesa.falta == "1" && mesa.asistencia == "0"){
+            holder.itemMesasBinding.cvMesas.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#E83845"))
+        }
+        else{
+            holder.itemMesasBinding.cvMesas.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+        }
+
         holder.itemMesasBinding.cvMesas.setOnClickListener {
 
             listener.onRecyclerViewBtnClick(holder.itemMesasBinding.cvMesas, mesas[position])
@@ -72,17 +82,6 @@ class MesasAdapter(
             val intent = Intent(context, AsistenciaActivity::class.java)
             intent.putExtras(toPass)
             context.startActivity(intent)
-
-
-        if(mesa.asistencia == "1" && mesa.falta == "0"){
-                   holder.itemMesasBinding.cvMesas.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#308446"))
-        }else if(mesa.falta == "1" && mesa.asistencia == "0"){
-            holder.itemMesasBinding.cvMesas.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#E83845"))
-        }
-        else{
-            holder.itemMesasBinding.cvMesas.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
-        }
-            //holder.itemMesasBinding.cardView.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#57A639"))
         }
     }
 
